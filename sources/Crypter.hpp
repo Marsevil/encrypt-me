@@ -9,7 +9,6 @@
 #define CRYPTER_HPP_
 
 #include <string>
-#include <openssl/aes.h>
 
 /**
  * This have to encrypt and decrypt chosen files.
