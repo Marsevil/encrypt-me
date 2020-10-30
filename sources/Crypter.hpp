@@ -9,6 +9,8 @@
 #define CRYPTER_HPP_
 
 #include <string>
+#include <stdexcept>
+#include <fstream>
 
 /**
  * This have to encrypt and decrypt chosen files.
@@ -26,6 +28,11 @@ class Crypter {
 	 * Represent password use for encryption or decryption.
 	 */
 	std::string password;
+
+	enum Process {
+		ENCRYPT,
+		DECRYPT
+	};
 
 public:
 	/**
@@ -63,6 +70,8 @@ public:
 	 * Decrypt encryptedFile and write result in clearFile
 	 */
 	void decrypt();
+
+	void checkConfig(Process process);
 };
 
 
