@@ -71,6 +71,11 @@ public:
 	 */
 	void decrypt();
 
+	/**
+	 * Check if path to clear and encrypted file are set, if password is set and if the clear file or the encrypted file can be red.
+	 * @throws runtime_error if one of the precedent conditions is unsatisfied.
+	 * @param process allow to choose if clear or encrypted file have to be checked.
+	 */
 	void checkConfig(Process process);
 };
 
