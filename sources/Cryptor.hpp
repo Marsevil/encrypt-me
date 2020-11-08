@@ -5,21 +5,24 @@
  *      Author: Marsevil
  */
 
-#ifndef CRYPTER_HPP_
-#define CRYPTER_HPP_
+#ifndef CRYPTOR_HPP_
+#define CRYPTOR_HPP_
 
 #include <string>
 #include <stdexcept>
 #include <fstream>
+#include <filesystem>
+
+namespace sf = std::filesystem;
 
 /**
  * This have to encrypt and decrypt chosen files.
  */
-class Crypter {
+class Cryptor {
 	/**
 	 * Path to the clear file must be exist if encrypt function will be use.
 	 */
-	std::string clearFile;
+	std::string uncryptedFile;
 	/**
 	 * Path to the encrypted file must be exist if decrypt function will be use.
 	 */
@@ -33,17 +36,31 @@ class Crypter {
 		ENCRYPT,
 		DECRYPT
 	};
+	
+	std::string const* getSourcePath(Process process) const;
+	std::string const* getDestinationPath(Process process) const;
+
+	/**
+	 * Check if path to clear and encrypted file are set, if password is set and if the clear file or the encrypted file can be red.
+	 *
+	 * @throws runtime_error if one of the precedent conditions is unsatisfied.
+	 *
+	 * @param process allow to choose if clear or encrypted file have to be checked.
+	 */
+	void checkConfig(Process process) const;
+
+	bool checkTimeStamp(Process process) const;
 
 public:
 	/**
 	 * Default constructor
 	 */
-	Crypter();
+	Cryptor();
 
 	/**
 	 * @param _clearFile Not null, should point to an existing file.
 	 */
-	inline void setClear(std::string _clearFile) { clearFile = _clearFile; }
+	inline void setClear(std::string _uncryptedFile) { uncryptedFile = _uncryptedFile; }
 	/**
 	 * @param _encryptedFile Not null.
 	 */
@@ -56,7 +73,7 @@ public:
 	/**
 	 * @return Path to the file that will be encrypted.
 	 */
-	inline std::string getClear() const { return clearFile; }
+	inline std::string getClear() const { return uncryptedFile; }
 	/**
 	 * @return Path to the file that represent encrypted version of the input file.
 	 */
@@ -65,19 +82,12 @@ public:
 	/**
 	 * Encrypt clearFile and write result in encryptedFile
 	 */
-	void encrypt();
+	void encrypt() const;
 	/**
 	 * Decrypt encryptedFile and write result in clearFile
 	 */
-	void decrypt();
-
-	/**
-	 * Check if path to clear and encrypted file are set, if password is set and if the clear file or the encrypted file can be red.
-	 * @throws runtime_error if one of the precedent conditions is unsatisfied.
-	 * @param process allow to choose if clear or encrypted file have to be checked.
-	 */
-	void checkConfig(Process process);
+	void decrypt() const;
 };
 
 
-#endif /* CRYPTER_HPP_ */
+#endif /* CRYPTOR_HPP_ */

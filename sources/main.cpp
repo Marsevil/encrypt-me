@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Crypter.hpp"
+#include "Cryptor.hpp"
 
 int main(int argc, char const *argv[]) {
     
-    Crypter* crp = new Crypter;
+    Cryptor* crp = new Cryptor;
 
     crp->setPassword("azerty");
 

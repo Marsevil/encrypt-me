@@ -6,11 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
 	main.cpp
-	Crypter.cpp
+	Cryptor.cpp
 )
 
 set(HDRS
-	Crypter.hpp
+	Cryptor.hpp
 )
 
 add_executable(main ${HDRS} ${SRCS})
