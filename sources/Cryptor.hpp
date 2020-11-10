@@ -22,11 +22,11 @@ class Cryptor {
 	/**
 	 * Path to the clear file must be exist if encrypt function will be use.
 	 */
-	std::string uncryptedFile;
+	sf::path uncryptedFile;
 	/**
 	 * Path to the encrypted file must be exist if decrypt function will be use.
 	 */
-	std::string encryptedFile;
+	sf::path encryptedFile;
 	/**
 	 * Represent password use for encryption or decryption.
 	 */
@@ -37,8 +37,8 @@ class Cryptor {
 		DECRYPT
 	};
 	
-	std::string const* getSourcePath(Process process) const;
-	std::string const* getDestinationPath(Process process) const;
+	sf::path const* getSourcePath(Process process) const;
+	sf::path const* getDestinationPath(Process process) const;
 
 	/**
 	 * Check if path to clear and encrypted file are set, if password is set and if the clear file or the encrypted file can be red.
@@ -60,15 +60,15 @@ public:
 	/**
 	 * @param _clearFile Not null, should point to an existing file.
 	 */
-	inline void setClear(std::string _uncryptedFile) { uncryptedFile = _uncryptedFile; }
+	inline void setClear(sf::path const& _uncryptedFile) { uncryptedFile = _uncryptedFile; }
 	/**
 	 * @param _encryptedFile Not null.
 	 */
-	inline void setEncrypted(std::string _encryptedFile) { encryptedFile = _encryptedFile; }
+	inline void setEncrypted(sf::path const& _encryptedFile) { encryptedFile = _encryptedFile; }
 	/**
 	 * @param _password Not null.
 	 */
-	inline void setPassword(std::string _password) { password = _password; }
+	inline void setPassword(std::string const& _password) { password = _password; }
 
 	/**
 	 * @return Path to the file that will be encrypted.

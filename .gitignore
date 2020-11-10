@@ -31,4 +31,7 @@
 *.out
 *.app
 
-build/
+# IDE
+.idea
+
+*build*/

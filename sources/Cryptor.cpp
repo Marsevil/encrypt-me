@@ -16,8 +16,8 @@ void Cryptor::encrypt() const {
 
 	// Prepare command.
 	std::string command = std::string("openssl aes-256-cbc -salt -pbkdf2")
-			+ std::string(" -in ") + uncryptedFile // Add input file
-			+ std::string(" -out ") + encryptedFile // Add output file
+			+ std::string(" -in ") + uncryptedFile.string() // Add input file
+			+ std::string(" -out ") + encryptedFile.string() // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command
@@ -29,15 +29,15 @@ void Cryptor::decrypt() const {
 
 	// Prepare command.
 	std::string command = "openssl aes-256-cbc -d -salt -pbkdf2"
-			+ std::string(" -in ") + encryptedFile // Add input file
-			+ std::string(" -out ") + uncryptedFile // Add output file
+			+ std::string(" -in ") + encryptedFile.string() // Add input file
+			+ std::string(" -out ") + uncryptedFile.string() // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command.
 	if (checkTimeStamp(Process::DECRYPT)) system(command.c_str());
 }
 
-std::string const* Cryptor::getSourcePath(Process process) const {
+sf::path const* Cryptor::getSourcePath(Process process) const {
 	switch (process) {
 	case Process::DECRYPT :
 		return &encryptedFile;
@@ -47,7 +47,7 @@ std::string const* Cryptor::getSourcePath(Process process) const {
 	}
 }
 
-std::string const* Cryptor::getDestinationPath(Process process) const {
+sf::path const* Cryptor::getDestinationPath(Process process) const {
 	switch (process) {
 	case Process::DECRYPT :
 		return &uncryptedFile;
@@ -65,13 +65,11 @@ void Cryptor::checkConfig(Process process) const {
 
 	// Check file existence.
 	std::ifstream file;
-	std::string const* path = getSourcePath(process);
+	sf::path const* path = getSourcePath(process);
 
-	file.open(*path);
-	if (!file.good()) {
-		throw std::runtime_error(*path + " can't be opened");
+	if (!sf::exists(*path)) {
+		throw std::runtime_error(path->string() + " doesn't exists");
 	}
-	file.close();
 }
 
 bool Cryptor::checkTimeStamp(Process process) const {
