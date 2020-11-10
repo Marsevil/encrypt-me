@@ -32,12 +32,25 @@ class Cryptor {
 	 */
 	std::string password;
 
+	/**
+	 * Describe which process is currently in use.
+	 */
 	enum Process {
 		ENCRYPT,
 		DECRYPT
 	};
-	
+
+	/**
+	 *
+	 * @param process is used to determine which file is the source and which one is the destination.
+	 * @return path pointer to uncryptedFile if encrypt process and cryptedFile else.
+	 */
 	sf::path const* getSourcePath(Process process) const;
+	/**
+	 *
+	 * @param process is used to determine which file is the source and which one is the destination.
+	 * @return path pointer to cryptedFile if encrypt process and uncryptedFile else.
+	 */
 	sf::path const* getDestinationPath(Process process) const;
 
 	/**
@@ -49,6 +62,11 @@ class Cryptor {
 	 */
 	void checkConfig(Process process) const;
 
+	/**
+	 * Check if the destination file have to be updated or not.
+	 * @param process is used to determine which file is source and which is destination.
+	 * @return if the destination file should be updated (true if it doesn't exists and according to last modification date else).
+	 */
 	bool checkTimeStamp(Process process) const;
 
 public:
