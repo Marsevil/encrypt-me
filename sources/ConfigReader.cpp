@@ -16,21 +16,44 @@ void ConfigReader::readConfig() {
         std::string key, value;
 
         if (std::getline(iline, key, '=') && std::getline(iline, value)) {
-            cleanString(key);
-            cleanString(value);
+            formatString(key);
+            lowerString(key);
+            formatString(value);
+
+            if (value.empty()) throw std::runtime_error(key + " value should not be empty.");
             parsedLine.insert_or_assign(key, value);
         }
     }
 
-    config->UNCRYPTED_FOLDER = parsedLine.at("UNCRYPTED_FOLDER");
-    config->ENCRYPTED_FOLDER = parsedLine.at("ENCRYPTED_FOLDER");
-    config->PASSWORD = parsedLine.at("PASSWORD");
+    try {
+        config->UNCRYPTED_FOLDER = parsedLine.at("uncrypted_folder");
+    } catch(std::out_of_range& e) {
+        throw std::runtime_error("UNCRYPTED_FOLDER property is not defined.");
+    }
+
+    try {
+        config->ENCRYPTED_FOLDER = parsedLine.at("encrypted_folder");
+    } catch(std::out_of_range& e) {
+        throw std::runtime_error("ENCRYPTED_FOLDER property is not defined.");
+    }
+
+    try {
+        config->PASSWORD = parsedLine.at("password");
+    } catch (std::out_of_range& e) {
+        throw std::runtime_error("PASSWORD property is not defined.");
+    }
 }
 
-void ConfigReader::cleanString(std::string &str) {
+void ConfigReader::formatString(std::string &str) {
     std::string::const_iterator it = str.begin();
     while (it != str.end()) {
         if (*it == ' ') str.erase(it);
         else ++it;
+    }
+}
+
+void ConfigReader::lowerString(std::string &str) {
+    for (char& c : str) {
+        c = (char)std::tolower(c);
     }
 }

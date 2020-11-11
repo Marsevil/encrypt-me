@@ -11,6 +11,8 @@
 #include <fstream>
 #include <map>
 #include <istream>
+#include <stdexcept>
+#include <cstring>
 
 namespace sf = std::filesystem;
 
@@ -24,7 +26,8 @@ class ConfigReader {
     static const sf::path CONFIG_FILE;
     static std::unique_ptr<Config> config;
     
-    static void cleanString(std::string& str);
+    static void formatString(std::string& str);
+    static void lowerString(std::string& str);
 
 public:
     static void readConfig();
