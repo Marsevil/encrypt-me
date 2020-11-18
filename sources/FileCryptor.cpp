@@ -7,6 +7,12 @@
 
 #include "FileCryptor.hpp"
 
+#ifdef __APPLE__
+const std::string ADDITIONAL_PARAMS("");
+#else
+const std::string ADDITIONAL_PARAMS("-pbkdf2");
+#endif
+
 FileCryptor::FileCryptor() : Cryptor() {
 	// Nothing to do here.
 }
@@ -15,7 +21,7 @@ void FileCryptor::encrypt() const {
 	checkConfig(Process::ENCRYPT);
 
 	// Prepare command.
-	std::string command = std::string("openssl aes-256-cbc -salt -pbkdf2")
+	std::string command = std::string("openssl aes-256-cbc -salt ") + ADDITIONAL_PARAMS
 			+ std::string(" -in ") + '"' + getClear().string() + '"' // Add input file
 			+ std::string(" -out ") + '"' + getEncrypted().string() + '"' // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
