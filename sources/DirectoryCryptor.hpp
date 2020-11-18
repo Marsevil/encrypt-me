@@ -7,14 +7,22 @@
 
 #include <filesystem>
 #include <stdexcept>
+#include <memory>
 
 #include "Cryptor.hpp"
+#include "FileCryptor.hpp"
 
 namespace sf = std::filesystem;
 
 class DirectoryCryptor : Cryptor {
 
+    /**
+     * @inherit
+     * Check if files are directories.
+     */
     void checkConfig(Process process) const override;
+
+    void doIt(Process process) const;
 
 public:
     /**
@@ -22,7 +30,14 @@ public:
      */
     DirectoryCryptor();
 
+    /**
+     * @inherit
+     */
     void encrypt() const override;
+    /**
+     * @inherit
+     */
+     void decrypt() const override;
 };
 
 

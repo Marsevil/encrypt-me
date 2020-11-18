@@ -26,6 +26,10 @@ class FileCryptor : public Cryptor {
 	 */
 	std::string password;
 
+	/**
+	 * @inherit
+	 * Add some test on password.
+	 */
 	void checkConfig(Process process) const override;
 
 	/**

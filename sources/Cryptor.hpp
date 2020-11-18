@@ -9,6 +9,9 @@
 
 namespace sf = std::filesystem;
 
+/**
+ * Interface class for basic encryption processes.
+ */
 class Cryptor {
     /**
 	 * Path to the clear file must be exist if encrypt function will be use.
@@ -29,7 +32,7 @@ protected:
     };
 
     /**
-	 * Check if path to clear and encrypted file are set, if password is set and if the clear file or the encrypted file can be red.
+	 * Check if path to clear and encrypted file are set, and if the clear file or the encrypted file can be red.
 	 *
 	 * @throws runtime_error if one of the precedent conditions is unsatisfied.
 	 *
