@@ -47,11 +47,12 @@ void ConfigReader::readConfig(){
 }
 
 void ConfigReader::formatString(std::string &str) {
-    std::string::const_iterator it = str.begin();
-    while (it != str.end()) {
-        if (*it == ' ') str.erase(it);
-        else ++it;
-    }
+
+    // Delete space before words.
+    for (std::string::const_iterator it = str.begin(); *it == ' '; ) str.erase(it);
+
+    // Delete space after words.
+    while (*str.rbegin() == ' ') str.pop_back();
 }
 
 void ConfigReader::lowerString(std::string &str) {
