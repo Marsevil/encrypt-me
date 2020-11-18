@@ -9,12 +9,17 @@ set(SRCS
     sources/FileCryptor.cpp
 	sources/ConfigReader.cpp
 	sources/DirectoryCryptor.cpp
+	sources/Cryptor.cpp
+	# Tests
+		tests/CryptorTest.hpp
+        tests/ConfigReaderTest.hpp
 )
 
 set(HDRS
     sources/FileCryptor.hpp
 	sources/ConfigReader.hpp
 	sources/DirectoryCryptor.hpp
+	sources/Cryptor.hpp
 )
 
 add_executable(main ${HDRS} ${SRCS})

@@ -1,14 +1,13 @@
 #include <iostream>
-#include "FileCryptor.hpp"
-#include "ConfigReader.hpp"
+#include "../tests/CryptorTest.hpp"
+#include "../tests/ConfigReaderTest.hpp"
 
 int main(int argc, char const *argv[]) {
-    
-    ConfigReader::readConfig();
 
-    std::cout << "uncrypted folder = " << ConfigReader::getConfig()->UNCRYPTED_FOLDER << std::endl
-        << "encrypted folder = " << ConfigReader::getConfig()->ENCRYPTED_FOLDER << std::endl
-        << "password = " << ConfigReader::getConfig()->PASSWORD << std::endl;
+    std::cout << "Test class FileCryptor." << std::endl;
+    cryptorTest();
+    std::cout << "Test class ConfigReader." << std::endl;
+    configReaderTest();
 
     return EXIT_SUCCESS;
 }

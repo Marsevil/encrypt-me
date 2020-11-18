@@ -1,7 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include "../sources/ConfigReader.hpp"
 
-int main(int argc, char const *argv[]) {
+void configReaderTest() {
     
     ConfigReader::readConfig();
 
@@ -9,5 +11,4 @@ int main(int argc, char const *argv[]) {
         << "encrypted folder = " << ConfigReader::getConfig()->ENCRYPTED_FOLDER << std::endl
         << "password = " << ConfigReader::getConfig()->PASSWORD << std::endl;
 
-    return EXIT_SUCCESS;
 }

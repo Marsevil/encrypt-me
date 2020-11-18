@@ -4,12 +4,17 @@
 
 #include "DirectoryCryptor.hpp"
 
-DirectoryCryptor::DirectoryCryptor() {
+DirectoryCryptor::DirectoryCryptor() : Cryptor() {
     // Nothing to do here.
 }
 
-void DirectoryCryptor::checkConfig(Process process) {
-    // Paths & password have to be defined.
-    if (uncryptedDirectory.empty()) throw std::runtime_error("Path to clear file have to be set !!");
-    if (encryptedDirectory.empty()) throw std::runtime_error("Path to encrypted file have to be set !!");
+void DirectoryCryptor::encrypt() const {
+
+}
+
+void DirectoryCryptor::checkConfig(Process process) const {
+    Cryptor::checkConfig(process);
+
+    //Check if file are directory.
+
 }

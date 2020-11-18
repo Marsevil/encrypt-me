@@ -8,27 +8,13 @@
 #include <filesystem>
 #include <stdexcept>
 
+#include "Cryptor.hpp"
+
 namespace sf = std::filesystem;
 
-class DirectoryCryptor {
-    /**
-     * Describe which process is currently in use.
-     */
-    enum Process {
-        ENCRYPT,
-        DECRYPT
-    };
+class DirectoryCryptor : Cryptor {
 
-    /**
-     * Path to the encrypted version of the directory.
-     */
-    sf::path encryptedDirectory;
-    /**
-     * Path to the uncrypted version of the directory.
-     */
-    sf::path uncryptedDirectory;
-
-    void checkConfig(Process process);
+    void checkConfig(Process process) const override;
 
 public:
     /**
@@ -36,24 +22,7 @@ public:
      */
     DirectoryCryptor();
 
-    /**
-     * @return can be empty.
-     */
-    inline sf::path getEncryptedDirectory() { return encryptedDirectory; }
-    /**
-     * @return can be empty.
-     */
-    inline sf::path getUncryptedDirectory() { return uncryptedDirectory; }
-    /**
-     * @param path can be empty.
-     */
-    inline void setEncryptedDirectory(sf::path path) { encryptedDirectory = path; }
-    /**
-     * @param path can be empty.
-     */
-    inline void setUncryptedDirectory(sf::path path) { uncryptedDirectory = path; }
-
-    void encrypt();
+    void encrypt() const override;
 };
 
 

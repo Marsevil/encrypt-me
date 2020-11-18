@@ -1,7 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include "../sources/FileCryptor.hpp"
 
-int main(int argc, char const *argv[]) {
+void cryptorTest() {
 
     FileCryptor* crp = new FileCryptor;
 
@@ -15,6 +17,4 @@ int main(int argc, char const *argv[]) {
     crp->decrypt();
 
     delete crp;
-
-    return EXIT_SUCCESS;
 }
