@@ -33,6 +33,9 @@
 
 # IDE
 .idea
+.cproject
+.project
+.settings
 
 #FileSystem
 .DS_Store
