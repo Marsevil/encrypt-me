@@ -34,4 +34,7 @@
 # IDE
 .idea
 
+#FileSystem
+.DS_Store
+
 *build*/
