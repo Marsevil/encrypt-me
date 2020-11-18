@@ -34,7 +34,7 @@ void FileCryptor::decrypt() const {
 	checkConfig(Process::DECRYPT);
 
 	// Prepare command.
-	std::string command = "openssl aes-256-cbc -d -salt -pbkdf2"
+	std::string command = std::string("openssl aes-256-cbc -d -salt ") + ADDITIONAL_PARAMS
 			+ std::string(" -in ") + '"' + getEncrypted().string() + '"' // Add input file
 			+ std::string(" -out ") + '"' + getClear().string() + '"' // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
