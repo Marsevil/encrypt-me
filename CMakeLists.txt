@@ -6,15 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
 	sources/main.cpp
-	sources/Cryptor.cpp
+    sources/FileCryptor.cpp
 	sources/ConfigReader.cpp
-	sources/Duplicator.cpp
+	sources/DirectoryCryptor.cpp
 )
 
 set(HDRS
-	sources/Cryptor.hpp
+    sources/FileCryptor.hpp
 	sources/ConfigReader.hpp
-	sources/Duplicator.hpp
+	sources/DirectoryCryptor.hpp
 )
 
 add_executable(main ${HDRS} ${SRCS})

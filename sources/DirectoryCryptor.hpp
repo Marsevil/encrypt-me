@@ -2,14 +2,23 @@
 // Created by marsevil on 18/11/2020.
 //
 
-#ifndef ENCRYPT_ME_DUPLICATOR_HPP
-#define ENCRYPT_ME_DUPLICATOR_HPP
+#ifndef ENCRYPT_ME_DIRECTORYCRYPTOR_HPP
+#define ENCRYPT_ME_DIRECTORYCRYPTOR_HPP
 
 #include <filesystem>
+#include <stdexcept>
 
 namespace sf = std::filesystem;
 
-class Duplicator {
+class DirectoryCryptor {
+    /**
+     * Describe which process is currently in use.
+     */
+    enum Process {
+        ENCRYPT,
+        DECRYPT
+    };
+
     /**
      * Path to the encrypted version of the directory.
      */
@@ -19,11 +28,13 @@ class Duplicator {
      */
     sf::path uncryptedDirectory;
 
+    void checkConfig(Process process);
+
 public:
     /**
      * Default constructor
      */
-    Duplicator();
+    DirectoryCryptor();
 
     /**
      * @return can be empty.
@@ -41,7 +52,9 @@ public:
      * @param path can be empty.
      */
     inline void setUncryptedDirectory(sf::path path) { uncryptedDirectory = path; }
+
+    void encrypt();
 };
 
 
-#endif //ENCRYPT_ME_DUPLICATOR_HPP
+#endif //ENCRYPT_ME_DIRECTORYCRYPTOR_HPP

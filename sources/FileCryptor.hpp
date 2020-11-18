@@ -18,7 +18,7 @@ namespace sf = std::filesystem;
 /**
  * This have to encrypt and decrypt chosen files.
  */
-class Cryptor {
+class FileCryptor {
 	/**
 	 * Path to the clear file must be exist if encrypt function will be use.
 	 */
@@ -73,7 +73,7 @@ public:
 	/**
 	 * Default constructor
 	 */
-	Cryptor();
+	FileCryptor();
 
 	/**
 	 * @param _clearFile Not null, should point to an existing file.

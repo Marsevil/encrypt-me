@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Cryptor.hpp"
+#include "FileCryptor.hpp"
 #include "ConfigReader.hpp"
 
 int main(int argc, char const *argv[]) {
