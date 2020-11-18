@@ -16,8 +16,8 @@ void FileCryptor::encrypt() const {
 
 	// Prepare command.
 	std::string command = std::string("openssl aes-256-cbc -salt -pbkdf2")
-			+ std::string(" -in ") + getEncrypted().string() // Add input file
-			+ std::string(" -out ") + getClear().string() // Add output file
+			+ std::string(" -in ") + getClear().string() // Add input file
+			+ std::string(" -out ") + getEncrypted().string() // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command

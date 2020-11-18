@@ -11,6 +11,7 @@ DirectoryCryptor::DirectoryCryptor() : Cryptor() {
 void DirectoryCryptor::doIt(Process process) const {
     DirectoryCryptor* dc = new DirectoryCryptor;
     FileCryptor* fc = new FileCryptor;
+    fc->setPassword(ConfigReader::getConfig()->PASSWORD);
     Cryptor* cryptor;
 
     // For each file contained in this directory
@@ -59,8 +60,4 @@ void DirectoryCryptor::checkConfig(Process process) const {
     } else {
         sf::create_directory(*destination);
     }
-}
-
-void DirectoryCryptor::decrypt() const {
-
 }

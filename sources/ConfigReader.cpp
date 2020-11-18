@@ -5,7 +5,7 @@
 #include "ConfigReader.hpp"
 
 const sf::path ConfigReader::CONFIG_FILE(std::getenv("HOME") + std::string("/encrypt-me_config.env"));
-std::unique_ptr<Config> ConfigReader::config(new Config);
+std::shared_ptr<Config> ConfigReader::config(new Config);
 
 void ConfigReader::readConfig(){
     if (!sf::exists(ConfigReader::CONFIG_FILE)) throw std::runtime_error(ConfigReader::CONFIG_FILE.string() + " doesn't exist");

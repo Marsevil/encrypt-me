@@ -38,7 +38,7 @@ class ConfigReader {
     /**
      * Current configuration.
      */
-    static std::unique_ptr<Config> config;
+    static std::shared_ptr<Config> config;
 
     /**
      * Suppress all space char in the string.
@@ -60,7 +60,7 @@ public:
     /**
      * @return can be not relevant if call before readConfig function.
      */
-    inline static std::unique_ptr<Config> const& getConfig() { return config; }
+    inline static std::shared_ptr<Config> const& getConfig() { return config; }
 };
 
 

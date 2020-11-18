@@ -11,10 +11,11 @@
 
 #include "Cryptor.hpp"
 #include "FileCryptor.hpp"
+#include "ConfigReader.hpp"
 
 namespace sf = std::filesystem;
 
-class DirectoryCryptor : Cryptor {
+class DirectoryCryptor : public Cryptor {
 
     /**
      * @inherit
