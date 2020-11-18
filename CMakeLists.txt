@@ -8,11 +8,14 @@ set(SRCS
 	sources/main.cpp
 	sources/Cryptor.cpp
 	sources/ConfigReader.cpp
+	sources/Duplicator.cpp
 )
 
 set(HDRS
 	sources/Cryptor.hpp
-	sources/ConfigReader.hpp)
+	sources/ConfigReader.hpp
+	sources/Duplicator.hpp
+)
 
 add_executable(main ${HDRS} ${SRCS})
 
