@@ -57,7 +57,21 @@ void DirectoryCryptor::checkConfig(Process process) const {
     if (!sf::is_directory(*source)) throw std::runtime_error(source->string() + " is not a directory.");
     if (sf::exists(*destination)) {
         if (!sf::is_directory(*destination)) throw std::runtime_error(source->string() + " is not a directory.");
+        if (checkTimeStamp(process)) deleteByFileName(*source, *destination);
     } else {
         sf::create_directory(*destination);
     }
+
 }
+
+void DirectoryCryptor::deleteByFileName(sf::path const &source, sf::path const &destination)
+{
+    for (sf::path path : sf::directory_iterator(destination))
+    {
+        if (!sf::exists(source / path.filename()))
+        {
+            sf::remove_all(path);
+        }
+    }
+}
+

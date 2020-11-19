@@ -24,6 +24,8 @@ class DirectoryCryptor : public Cryptor {
     void checkConfig(Process process) const override;
 
     void doIt(Process process) const;
+    
+    static void deleteByFileName(sf::path const &source, sf::path const &destination);
 
 public:
     /**
