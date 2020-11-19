@@ -32,13 +32,6 @@ class FileCryptor : public Cryptor {
 	 */
 	void checkConfig(Process process) const override;
 
-	/**
-	 * Check if the destination file have to be updated or not.
-	 * @param process is used to determine which file is source and which is destination.
-	 * @return if the destination file should be updated (true if it doesn't exists and according to last modification date else).
-	 */
-	bool checkTimeStamp(Process process) const;
-
 public:
 	/**
 	 * Default constructor

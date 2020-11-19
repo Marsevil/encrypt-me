@@ -50,17 +50,6 @@ void FileCryptor::checkConfig(Process process) const {
     if (password.empty()) throw std::runtime_error("Password have to be set !!");
 }
 
-bool FileCryptor::checkTimeStamp(Process process) const {
-	// Get source & destination depending of process.
-	sf::path sourceFile(*getSourcePath(process));
-	sf::path destinationFile(*getDestinationPath(process));
-
-	// Check existence of destinationFile.
-	if (!sf::exists(destinationFile)) return true;
-
-	return (sf::last_write_time(sourceFile) > sf::last_write_time(destinationFile));
-}
-
 FileCryptor::~FileCryptor() {
     // Do nothing here.
 }
