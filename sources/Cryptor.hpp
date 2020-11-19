@@ -38,14 +38,14 @@ protected:
 	 *
 	 * @param process allow to choose if clear or encrypted file have to be checked.
 	 */
-    virtual void checkConfig(Process process) const;
+    virtual void checkConfig(Process const& process) const;
 
     /**
 	 * Check if the destination file have to be updated or not.
 	 * @param process is used to determine which file is source and which is destination.
 	 * @return if the destination file should be updated (true if it doesn't exists and according to last modification date else).
 	 */
-    bool checkTimeStamp(Process process) const;
+    bool checkTimeStamp(Process const& process) const;
 
 public:
     Cryptor() = default;
@@ -73,12 +73,12 @@ public:
 	 * @param process is used to determine which file is the source and which one is the destination.
 	 * @return path pointer to uncryptedFile if encrypt process and cryptedFile else.
 	 */
-    sf::path const* getSourcePath(Process process) const;
+    sf::path const* getSourcePath(Process const& process) const;
     /**
      * @param process is used to determine which file is the source and which one is the destination.
      * @return path pointer to cryptedFile if encrypt process and uncryptedFile else.
      */
-    sf::path const* getDestinationPath(Process process) const;
+    sf::path const* getDestinationPath(Process const& process) const;
 
     /**
 	 * Encrypt clearFile and write result in encryptedFile

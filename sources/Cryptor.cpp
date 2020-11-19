@@ -4,7 +4,7 @@
 
 #include "Cryptor.hpp"
 
-void Cryptor::checkConfig(Cryptor::Process process) const {
+void Cryptor::checkConfig(Cryptor::Process const& process) const {
     // Paths & password have to be defined.
     if (uncryptedFile.empty()) throw std::runtime_error("Path to clear file have to be set !!");
     if (encryptedFile.empty()) throw std::runtime_error("Path to encrypted file have to be set !!");
@@ -17,27 +17,25 @@ void Cryptor::checkConfig(Cryptor::Process process) const {
     }
 }
 
-sf::path const* Cryptor::getSourcePath(Process process) const {
+sf::path const* Cryptor::getSourcePath(Process const& process) const {
     switch (process) {
         case Process::DECRYPT :
             return &encryptedFile;
-            break;
         default :
             return &uncryptedFile;
     }
 }
 
-sf::path const* Cryptor::getDestinationPath(Process process) const {
+sf::path const* Cryptor::getDestinationPath(Process const& process) const {
     switch (process) {
         case Process::DECRYPT :
             return &uncryptedFile;
-            break;
         default :
             return &encryptedFile;
     }
 }
 
-bool Cryptor::checkTimeStamp(Process process) const {
+bool Cryptor::checkTimeStamp(Process const& process) const {
     // Get source & destination depending of process.
     sf::path sourceFile(*getSourcePath(process));
     sf::path destinationFile(*getDestinationPath(process));

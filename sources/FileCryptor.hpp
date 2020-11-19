@@ -30,14 +30,14 @@ class FileCryptor : public Cryptor {
 	 * @inherit
 	 * Add some test on password.
 	 */
-	void checkConfig(Process process) const override;
+	void checkConfig(Process const& process) const override;
 
 public:
 	/**
 	 * Default constructor
 	 */
-	FileCryptor();
-	~FileCryptor();
+	FileCryptor() = default;
+	~FileCryptor() override = default;
 
 	/**
 	 * @param _password Not null.

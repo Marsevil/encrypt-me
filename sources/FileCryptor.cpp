@@ -13,10 +13,6 @@ const std::string ADDITIONAL_PARAMS("");
 const std::string ADDITIONAL_PARAMS("-pbkdf2");
 #endif
 
-FileCryptor::FileCryptor() : Cryptor() {
-	// Nothing to do here.
-}
-
 void FileCryptor::encrypt() const {
 	checkConfig(Process::ENCRYPT);
 
@@ -27,7 +23,10 @@ void FileCryptor::encrypt() const {
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command
-	if (checkTimeStamp(Process::ENCRYPT)) system(command.c_str());
+	if (checkTimeStamp(Process::ENCRYPT)) {
+	    system(command.c_str());
+	    sf::last_write_time(*getDestinationPath(Process::ENCRYPT), sf::last_write_time(*getSourcePath(Process::ENCRYPT)));
+	}
 }
 
 void FileCryptor::decrypt() const {
@@ -40,16 +39,16 @@ void FileCryptor::decrypt() const {
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command.
-	if (checkTimeStamp(Process::DECRYPT)) system(command.c_str());
+	if (checkTimeStamp(Process::DECRYPT)) {
+	    system(command.c_str());
+	    sf::last_write_time(*getDestinationPath(Process::DECRYPT), sf::last_write_time(*getSourcePath(Process::DECRYPT)));
+	}
 }
 
-void FileCryptor::checkConfig(Process process) const {
+void FileCryptor::checkConfig(Process const& process) const {
     Cryptor::checkConfig(process);
 
     // Password shouldn't be empty.
     if (password.empty()) throw std::runtime_error("Password have to be set !!");
 }
 
-FileCryptor::~FileCryptor() {
-    // Do nothing here.
-}

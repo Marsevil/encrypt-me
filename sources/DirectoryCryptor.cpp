@@ -4,18 +4,16 @@
 
 #include "DirectoryCryptor.hpp"
 
-DirectoryCryptor::DirectoryCryptor() : Cryptor() {
-    // Nothing to do here.
-}
-
-void DirectoryCryptor::doIt(Process process) const {
+void DirectoryCryptor::doIt(Process const& process) const {
     DirectoryCryptor* dc = new DirectoryCryptor;
     FileCryptor* fc = new FileCryptor;
+    sf::path const* source = getSourcePath(process);
+    sf::path const* dest = getDestinationPath(process);
     fc->setPassword(ConfigReader::getConfig()->PASSWORD);
     Cryptor* cryptor;
 
     // For each file contained in this directory
-    for (sf::path path : sf::directory_iterator(*getSourcePath(process))) {
+    for (sf::path const& path : sf::directory_iterator(*source)) {
 
         // Using DirectoryCryptor or FileCryptor depending file type.
         if (sf::is_directory(path)) cryptor = dc;
@@ -33,6 +31,8 @@ void DirectoryCryptor::doIt(Process process) const {
         }
     }
 
+    sf::last_write_time(*dest, sf::last_write_time(*source));
+
     delete dc;
     delete fc;
 }
@@ -47,7 +47,7 @@ void DirectoryCryptor::decrypt() const {
     doIt(Process::DECRYPT);
 }
 
-void DirectoryCryptor::checkConfig(Process process) const {
+void DirectoryCryptor::checkConfig(Process const& process) const {
     Cryptor::checkConfig(process);
 
     //Check if files are directories.
@@ -66,7 +66,7 @@ void DirectoryCryptor::checkConfig(Process process) const {
 
 void DirectoryCryptor::deleteByFileName(sf::path const &source, sf::path const &destination)
 {
-    for (sf::path path : sf::directory_iterator(destination))
+    for (sf::path const& path : sf::directory_iterator(destination))
     {
         if (!sf::exists(source / path.filename()))
         {

@@ -21,9 +21,9 @@ class DirectoryCryptor : public Cryptor {
      * @inherit
      * Check if files are directories.
      */
-    void checkConfig(Process process) const override;
+    void checkConfig(Process const& process) const override;
 
-    void doIt(Process process) const;
+    void doIt(Process const& process) const;
     
     static void deleteByFileName(sf::path const &source, sf::path const &destination);
 
@@ -31,7 +31,8 @@ public:
     /**
      * Default constructor
      */
-    DirectoryCryptor();
+    DirectoryCryptor() = default;
+    ~DirectoryCryptor() override = default;
 
     /**
      * @inherit
