@@ -23,7 +23,7 @@ void FileCryptor::encrypt() const {
 	// Prepare command.
 	std::string command = std::string("openssl aes-256-cbc -salt ") + ADDITIONAL_PARAMS
 			+ std::string(" -in ") + '"' + getClear().string() + '"' // Add input file
-			+ std::string(" -out ") + '"' + getEncrypted().string() + '"' // Add output file
+			+ std::string(" -out ") + '"' + getEncrypted().string() + ".enc" + '"' // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command
@@ -34,9 +34,12 @@ void FileCryptor::decrypt() const {
 	checkConfig(Process::DECRYPT);
 
 	// Prepare command.
+    std::string path = getClear().string();
+    path.erase(path.end() - 4, path.end()); // Remove the .enc extension to file name
+    
 	std::string command = std::string("openssl aes-256-cbc -d -salt ") + ADDITIONAL_PARAMS
 			+ std::string(" -in ") + '"' + getEncrypted().string() + '"' // Add input file
-			+ std::string(" -out ") + '"' + getClear().string() + '"' // Add output file
+			+ std::string(" -out ") + '"' + path + '"' // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command.
