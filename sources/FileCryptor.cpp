@@ -34,12 +34,15 @@ void FileCryptor::decrypt() const {
 	checkConfig(Process::DECRYPT);
 
 	// Prepare command.
-    std::string path = getClear().string();
-    path.erase(path.end() - 4, path.end()); // Remove the .enc extension to file name
+    sf::path path = getClear();
+    if (path.extension() == ".enc")
+    {
+        path.replace_extension(""); // Remove the .enc extension to file name
+    }
     
 	std::string command = std::string("openssl aes-256-cbc -d -salt ") + ADDITIONAL_PARAMS
 			+ std::string(" -in ") + '"' + getEncrypted().string() + '"' // Add input file
-			+ std::string(" -out ") + '"' + path + '"' // Add output file
+			+ std::string(" -out ") + '"' + path.string() + '"' // Add output file
 			+ std::string(" -pass pass:") + password; // Add password
 
 	// Execute command.
