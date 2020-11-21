@@ -15,12 +15,19 @@ void DirectoryCryptor::doIt(Process const& process) const {
     // For each file contained in this directory
     for (sf::path const& path : sf::directory_iterator(*source)) {
 
+        sf::path clearPath(getClear() / path.filename());
+        sf::path encryptedPath(getEncrypted() / path.filename());
+
         // Using DirectoryCryptor or FileCryptor depending file type.
         if (sf::is_directory(path)) cryptor = dc;
-        else cryptor = fc;
+        else {
+            cryptor = fc;
+            if (clearPath.extension() == ".enc") clearPath.replace_extension("");
+            if (encryptedPath.extension() != ".enc") encryptedPath += ".enc";
+        }
 
-        cryptor->setClear(getClear() / path.filename());
-        cryptor->setEncrypted(getEncrypted() / path.filename());
+        cryptor->setClear(clearPath);
+        cryptor->setEncrypted(encryptedPath);
 
         switch (process) {
             case Process::ENCRYPT:
