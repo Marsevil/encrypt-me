@@ -1,28 +1,24 @@
 cmake_minimum_required(VERSION 3.0)
-project(encrypt-me)
+project(lyoko)
 
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
-	sources/main.cpp
-    sources/FileCryptor.cpp
-	sources/ConfigReader.cpp
-	sources/DirectoryCryptor.cpp
-	sources/Cryptor.cpp
-	# Tests
-		tests/CryptorTest.hpp
-        tests/ConfigReaderTest.hpp
+		lyoko/sources/main.cpp
+		tests/DirectoryCyptorTest.hpp
 )
 
 set(HDRS
-    sources/FileCryptor.hpp
-	sources/ConfigReader.hpp
-	sources/DirectoryCryptor.hpp
-	sources/Cryptor.hpp
+
 )
 
-add_executable(main ${HDRS} ${SRCS})
+add_executable(lyoko ${HDRS} ${SRCS})
 
-set_property(TARGET main PROPERTY CXX_STANDARD 17)
-target_compile_options(main PUBLIC "-Wall")
+set_property(TARGET lyoko PROPERTY CXX_STANDARD 17)
+target_compile_options(lyoko PUBLIC "-Wall")
+
+target_include_directories(lyoko PUBLIC "include" BEFORE)
+add_subdirectory("includes/lib_encrypt-me")
+
+target_link_libraries(lyoko encrypt-me)
