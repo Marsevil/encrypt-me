@@ -23,9 +23,22 @@ void testDecryption(DirectoryCryptor* dr) {
     dr->decrypt();
 }
 
+void printHelp() {
+    std::cout << "usage : lyoko <command>" << std::endl
+        << std::endl << "push\t Copy unencrypted directory to encrypted directory by encrypting all files." << std::endl
+        << "pull\t Copy encrypted directory to unencrypted directory by decrypting all files." << std::endl
+        << "help\t Print help (this page)." << std::endl;
+}
+
 int main(int argc, char const *argv[]) {
-    if (argc > 2) std::cout << "Only one argument is expected." << std::endl;
-    else if (argc < 2) std::cout << "One argument is expected." << std::endl;
+    if (argc > 2) {
+        std::cout << "Only one argument is expected." << std::endl << std::endl;
+        printHelp();
+    }
+    else if (argc < 2) {
+        std::cout << "One argument is expected." << std::endl << std::endl;
+        printHelp();
+    }
     else {
         std::string param(argv[1]);
 
@@ -39,13 +52,13 @@ int main(int argc, char const *argv[]) {
             DirectoryCryptor* rootDR(configRootDR());
 
             rootDR->encrypt();
-            testDecryption(rootDR);
 
             delete rootDR;
         } else if (param == "help") {
-            std::cout << "No help are available." << std::endl;
+            printHelp();
         } else {
-            std::cout << "Unknown parameter : " << param << '.' << std::endl;
+            std::cout << "Unknown parameter : " << param << '.' << std::endl << std::endl;
+            printHelp();
         }
     }
 
