@@ -73,9 +73,19 @@ void DirectoryCryptor::checkConfig(Process const& process) const {
 
 void DirectoryCryptor::deleteByFileName(sf::path const &source, sf::path const &destination)
 {
+    // Process all destination files
     for (sf::path const& path : sf::directory_iterator(destination))
     {
-        if (!sf::exists(source / path.filename()))
+        // Build the path which have to be checked in the source directory.
+        sf::path checkedPath(source / path.filename());
+
+        // If the path is not a directory extension have to remove or add.
+        if (!sf::is_directory(path)) {
+            if (checkedPath.extension() == ".enc") checkedPath.replace_extension("");
+            else checkedPath += ".enc";
+        }
+
+        if (!sf::exists(checkedPath))
         {
             sf::remove_all(path);
         }
