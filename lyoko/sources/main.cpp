@@ -27,7 +27,8 @@ void printHelp() {
     std::cout << "usage : lyoko <command>" << std::endl
         << std::endl << "push\t Copy unencrypted directory to encrypted directory by encrypting all files." << std::endl
         << "pull\t Copy encrypted directory to unencrypted directory by decrypting all files." << std::endl
-        << "help\t Print help (this page)." << std::endl;
+        << "help\t Print help (this page)." << std::endl
+        << std::endl << "v1.0.1" << std::endl;
 }
 
 int main(int argc, char const *argv[]) {
