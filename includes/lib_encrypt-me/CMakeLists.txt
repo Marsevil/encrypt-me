@@ -1,21 +1,22 @@
 cmake_minimum_required(VERSION 3.0)
 project(lib_encrypt-me)
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
 		sources/FileCryptor.cpp
-		sources/ConfigReader.cpp
 		sources/DirectoryCryptor.cpp
 		sources/Cryptor.cpp
+		sources/Controller.cpp
 )
 
 set(HDRS
 		sources/FileCryptor.hpp
-		sources/ConfigReader.hpp
 		sources/DirectoryCryptor.hpp
 		sources/Cryptor.hpp
+		sources/Controller.hpp
+		sources/Tuple.hpp
 )
 
 add_library(encrypt-me ${HDRS} ${SRCS})

@@ -11,7 +11,7 @@
 
 #include "Cryptor.hpp"
 #include "FileCryptor.hpp"
-#include "ConfigReader.hpp"
+#include "../../../lyoko/sources/ConfigReader.hpp"
 
 namespace sf = std::filesystem;
 

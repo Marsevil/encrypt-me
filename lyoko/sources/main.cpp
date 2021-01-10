@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 
-#include "../../includes/lib_encrypt-me/sources/ConfigReader.hpp"
+#include "ConfigReader.hpp"
 #include "../../includes/lib_encrypt-me/sources/DirectoryCryptor.hpp"
 
 DirectoryCryptor* configRootDR() {

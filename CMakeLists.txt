@@ -1,16 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
 project(lyoko)
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
-		lyoko/sources/main.cpp
-		tests/DirectoryCyptorTest.hpp
+	tests/main.cpp
 )
 
 set(HDRS
-
+	tests/TestController.hpp
 )
 
 add_executable(lyoko ${HDRS} ${SRCS})

@@ -1,5 +1,5 @@
 #include "../includes/lib_encrypt-me/sources/DirectoryCryptor.hpp"
-#include "../includes/lib_encrypt-me/sources/ConfigReader.hpp"
+#include "../lyoko/sources/ConfigReader.hpp"
 
 void directoryCryptorTest() {
     ConfigReader::readConfig();
