@@ -11,8 +11,10 @@
 #include "Tuple.hpp"
 #include "Applyer.hpp"
 #include "CryptMan.hpp"
+#include "View.hpp"
 
 class Controller {
+    View* view;
     /**
      * Root directory which will be use as reference.
      */
@@ -38,13 +40,15 @@ class Controller {
     Applyer* getApplyer(Applyer::Process const& process) const;
 
 public:
-    Controller(sf::path const& _source, sf::path const& _destination, std::string const& _password);
+    Controller(View* _view, sf::path const& _source = "", sf::path const& _destination = "", std::string const& _password = "");
 
     inline sf::path const& getSource() const { return source; }
     inline void setSource(sf::path const& _source) { source = _source; }
 
     inline sf::path const& getDestination() const { return destination; }
     inline void setDestination(sf::path const& _destination) { destination = _destination; }
+
+    inline void setPassword(std::string _password) { password = _password; }
 
     /**
      * @param encExtension Should be true if .enc extension have to be added or removed in destination.
@@ -57,9 +61,16 @@ public:
      * @throws runtime_error if the source is not a directory.
      * @return an empty vector if the destination directory exist, if not a create tuple will be created.
      */
-    std::vector<Tuple> checkConfig() const;
+    std::vector<Tuple> checkConfig(bool isCryptography) const;
 
+    /**
+     * Apply modifications according to diffList.
+     * @param diffList list of differences.
+     * @param process define what we want to do.
+     */
     void apply(std::vector<Tuple> const& diffList, Applyer::Process process) const;
+
+    void run();
 };
 
 

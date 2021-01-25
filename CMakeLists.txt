@@ -5,11 +5,14 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SRCS
-	tests/main.cpp
+	lyoko/sources/main.cpp
+	lyoko/sources/ConfigReader.cpp
+		lyoko/sources/CommandView.cpp
 )
 
 set(HDRS
-	tests/TestController.hpp
+	lyoko/sources/ConfigReader.hpp
+		lyoko/sources/CommandView.hpp
 )
 
 add_executable(lyoko ${HDRS} ${SRCS})

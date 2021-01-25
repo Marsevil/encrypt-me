@@ -4,13 +4,13 @@
 
 #include "Controller.hpp"
 
-Controller::Controller(sf::path const& _source, sf::path const& _destination, std::string const& _password)
-: source(_source), destination(_destination), password(_password) {
+Controller::Controller(View* _view, sf::path const& _source, sf::path const& _destination, std::string const& _password)
+: view(_view), source(_source), destination(_destination), password(_password) {
     // Nothing to do here.
 }
 
 std::vector<Tuple> Controller::diff(bool encExtension) const {
-    std::vector<Tuple> diffList(checkConfig());
+    std::vector<Tuple> diffList(checkConfig(encExtension));
 
     diff(encExtension, source, destination, diffList);
 
@@ -33,7 +33,12 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
             });
             else if (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath)) {
                 for (sf::path const& path : sf::directory_iterator(destinationPath)) {
-                    if (!exists(sourcePath / path.filename())) diffList.push_back({
+                    sf::path hypotheticalSourcePath(sourcePath / path.filename());
+                    if (encExtension) {
+                        if (hypotheticalSourcePath.extension() == ".enc") hypotheticalSourcePath.replace_extension("");
+                        else hypotheticalSourcePath += ".enc";
+                    }
+                    if (!exists(hypotheticalSourcePath)) diffList.push_back({
                             "",
                             path,
                             Tuple::Action::DELETE
@@ -64,7 +69,7 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
 
 }
 
-std::vector<Tuple> Controller::checkConfig() const {
+std::vector<Tuple> Controller::checkConfig(bool isCryptography) const {
     std::vector<Tuple> ret;
 
     if (!sf::exists(source)) throw std::runtime_error("Source doesn't exists.");
@@ -74,6 +79,8 @@ std::vector<Tuple> Controller::checkConfig() const {
         destination,
         Tuple::Action::CREATE_DIR
     });
+
+    if (isCryptography && password.empty()) throw std::runtime_error("Password should not be empty.");
 
     return ret;
 }
@@ -93,12 +100,16 @@ void Controller::apply(std::vector<Tuple> const& diffList, Applyer::Process proc
 
     // Apply modifications.
     for (Tuple const& tuple : diffList) {
+        view->printTask(tuple);
+
         if (tuple.toDo == Tuple::Action::CREATE_DIR) sf::create_directories(tuple.destination);
         else if (tuple.toDo == Tuple::Action::CREATE || tuple.toDo == Tuple::Action::UPDATE) {
             applyer->setSource(tuple.source);
             applyer->setDestination(tuple.destination);
             applyer->apply(process);
         } else if (tuple.toDo == Tuple::DELETE) sf::remove_all(tuple.destination);
+
+        view->printDone();
     }
 
     // Copy last modified time.
@@ -108,4 +119,19 @@ void Controller::apply(std::vector<Tuple> const& diffList, Applyer::Process proc
     }
 
     delete applyer;
+}
+
+void Controller::run() {
+    setSource(view->getSource());
+    setDestination(view->getDestination());
+
+    Applyer::Process process(view->getProcess());
+    Action action(view->getAction());
+
+    bool isCryptography = (process == Applyer::DECRYPT || process == Applyer::ENCRYPT);
+    if (isCryptography) setPassword(view->getPassword());
+    std::vector<Tuple> diffs(diff(isCryptography));
+
+    if (action == Action::APPLY && view->confirmDiff(diffs)) apply(diffs, process);
+    else if (action == Action::SHOW) view->printDiff(diffs);
 }
