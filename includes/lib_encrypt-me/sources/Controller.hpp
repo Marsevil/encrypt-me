@@ -27,7 +27,8 @@ public:
     /**
      * @return List of tuples that represent all differences and all required action.
      */
-    std::vector<Tuple> diff(bool encExtension = false, sf::path const& sourcePath = sf::path()) const;
+    std::vector<Tuple> diff(bool encExtension = false) const;
+    static void diff(bool encExtension, sf::path const& sourceDirectory, sf::path const& destinationDirectory, std::vector<Tuple>& diffList);
 
     std::vector<Tuple> checkConfig() const;
 };

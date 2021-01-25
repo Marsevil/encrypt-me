@@ -9,31 +9,32 @@ Controller::Controller(sf::path const& _source, sf::path const& _destination, st
     // Nothing to do here.
 }
 
-std::vector<Tuple> Controller::diff(bool encExtension, sf::path const& newSource) const {
+std::vector<Tuple> Controller::diff(bool encExtension) const {
+    std::vector<Tuple> diffList(checkConfig());
 
-    std::vector<Tuple> retValue;
-    sf::path source(newSource);
+    diff(encExtension, source, destination, diffList);
 
-    if (newSource.empty()) {
-        retValue = checkConfig();
-        source = getSource();
-    }
+    return diffList;
+}
 
-    for (sf::path const& sourcePath : sf::directory_iterator(source)) {
+void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::path const& destinationDirectory, std::vector<Tuple>& diffList) {
 
-        sf::path destinationPath(getDestination() / sourcePath.lexically_relative(getSource()));
+    for (sf::path const& sourcePath : sf::directory_iterator(sourceDirectory)) {
+
+        sf::path destinationPath(destinationDirectory / sourcePath.filename());
         bool destinationExist(sf::exists(destinationPath));
 
-        if (!destinationExist) retValue.push_back({
+        if (!destinationExist) diffList.push_back({
             sourcePath,
             destinationPath,
             Tuple::Action::CREATE
         });
+
         if (sf::is_directory(sourcePath)) {
             // If sourcePath is a directory
             if (destinationExist && (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath))) {
                 for (sf::path const& path : sf::directory_iterator(destinationPath)) {
-                    if (!exists(sourcePath / path.filename())) retValue.push_back({
+                    if (!exists(sourcePath / path.filename())) diffList.push_back({
                             "",
                             path,
                             Tuple::Action::DELETE
@@ -41,15 +42,15 @@ std::vector<Tuple> Controller::diff(bool encExtension, sf::path const& newSource
                 }
             }
 
-            std::vector<Tuple> directoryDiff(diff(encExtension, sourcePath));
-            retValue.insert(retValue.end(), directoryDiff.begin(), directoryDiff.end());
+            diff(encExtension, sourcePath, destinationPath, diffList);
         } else {
             // If sourcePath is not a directory.
             if (encExtension) {
-                if (destinationPath.extension() != ".enc") destinationPath += ".enc";
+                if (sourcePath.extension() == ".enc") destinationPath.replace_extension("");
+                else destinationPath += ".enc";
             }
 
-            if (destinationExist && (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath))) retValue.push_back({
+            if (destinationExist && (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath))) diffList.push_back({
                     sourcePath,
                     destinationPath,
                     Tuple::Action::UPDATE
@@ -57,7 +58,6 @@ std::vector<Tuple> Controller::diff(bool encExtension, sf::path const& newSource
         }
     }
 
-    return retValue;
 }
 
 std::vector<Tuple> Controller::checkConfig() const {
