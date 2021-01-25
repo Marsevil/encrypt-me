@@ -9,6 +9,8 @@ set(SRCS
 		sources/DirectoryCryptor.cpp
 		sources/Cryptor.cpp
 		sources/Controller.cpp
+		sources/Applyer.cpp
+		sources/CryptMan.cpp
 )
 
 set(HDRS
@@ -17,6 +19,8 @@ set(HDRS
 		sources/Cryptor.hpp
 		sources/Controller.hpp
 		sources/Tuple.hpp
+		sources/Applyer.hpp
+		sources/CryptMan.hpp
 )
 
 add_library(encrypt-me ${HDRS} ${SRCS})

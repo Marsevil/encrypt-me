@@ -5,5 +5,5 @@
 #include "TestController.hpp"
 
 int main() {
-    testDiffFunction();
+    testApplyFunctionEncrypt();
 }

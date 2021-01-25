@@ -9,11 +9,33 @@
 #include <stdexcept>
 
 #include "Tuple.hpp"
+#include "Applyer.hpp"
+#include "CryptMan.hpp"
 
 class Controller {
+    /**
+     * Root directory which will be use as reference.
+     */
     sf::path source;
+    /**
+     * Root directory which have to be sync with source.
+     */
     sf::path destination;
+    /**
+     * Password use for encryption.
+     */
     std::string password;
+
+    /**
+     * fill diffList with all differences.
+     * @param encExtension Should be true if .enc extension have to be added or removed in destination.
+     * @param sourceDirectory
+     * @param destinationDirectory
+     * @param diffList list which have to be fill.
+     */
+    static void diff(bool encExtension, sf::path const& sourceDirectory, sf::path const& destinationDirectory, std::vector<Tuple>& diffList);
+
+    Applyer* getApplyer(Applyer::Process const& process) const;
 
 public:
     Controller(sf::path const& _source, sf::path const& _destination, std::string const& _password);
@@ -25,12 +47,19 @@ public:
     inline void setDestination(sf::path const& _destination) { destination = _destination; }
 
     /**
+     * @param encExtension Should be true if .enc extension have to be added or removed in destination.
      * @return List of tuples that represent all differences and all required action.
      */
     std::vector<Tuple> diff(bool encExtension = false) const;
-    static void diff(bool encExtension, sf::path const& sourceDirectory, sf::path const& destinationDirectory, std::vector<Tuple>& diffList);
 
+    /**
+     * @throws runtime_error if the source does not exist.
+     * @throws runtime_error if the source is not a directory.
+     * @return an empty vector if the destination directory exist, if not a create tuple will be created.
+     */
     std::vector<Tuple> checkConfig() const;
+
+    void apply(std::vector<Tuple> const& diffList, Applyer::Process process) const;
 };
 
 

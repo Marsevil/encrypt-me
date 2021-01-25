@@ -14,7 +14,8 @@ struct Tuple {
     enum Action {
         UPDATE,
         DELETE,
-        CREATE
+        CREATE,
+        CREATE_DIR
     };
 
     sf::path source;

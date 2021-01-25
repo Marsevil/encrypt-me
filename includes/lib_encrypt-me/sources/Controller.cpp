@@ -22,17 +22,16 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
     for (sf::path const& sourcePath : sf::directory_iterator(sourceDirectory)) {
 
         sf::path destinationPath(destinationDirectory / sourcePath.filename());
-        bool destinationExist(sf::exists(destinationPath));
+        bool isDirectory(sf::is_directory(sourcePath));
 
-        if (!destinationExist) diffList.push_back({
-            sourcePath,
-            destinationPath,
-            Tuple::Action::CREATE
-        });
-
-        if (sf::is_directory(sourcePath)) {
+        if (isDirectory) {
             // If sourcePath is a directory
-            if (destinationExist && (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath))) {
+            if (!sf::exists(destinationPath)) diffList.push_back({
+                sourcePath,
+                destinationPath,
+                Tuple::Action::CREATE_DIR
+            });
+            else if (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath)) {
                 for (sf::path const& path : sf::directory_iterator(destinationPath)) {
                     if (!exists(sourcePath / path.filename())) diffList.push_back({
                             "",
@@ -50,11 +49,16 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
                 else destinationPath += ".enc";
             }
 
-            if (destinationExist && (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath))) diffList.push_back({
-                    sourcePath,
-                    destinationPath,
-                    Tuple::Action::UPDATE
-                });
+            if (!sf::exists(destinationPath)) diffList.push_back({
+                sourcePath,
+                destinationPath,
+                Tuple::Action::CREATE
+            });
+            else if (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath)) diffList.push_back({
+                sourcePath,
+                destinationPath,
+                Tuple::Action::UPDATE
+            });
         }
     }
 
@@ -68,8 +72,33 @@ std::vector<Tuple> Controller::checkConfig() const {
     if (!sf::exists(destination)) ret.push_back({
         source,
         destination,
-        Tuple::Action::CREATE
+        Tuple::Action::CREATE_DIR
     });
 
     return ret;
+}
+
+Applyer* Controller::getApplyer(const Applyer::Process &process) const {
+    if (process == Applyer::Process::ENCRYPT || process == Applyer::Process::DECRYPT) {
+        return new CryptMan(password);
+    } else if (process == Applyer::Process::COPY) {
+        throw std::runtime_error("Copy function not implemented yet.");
+    } else {
+        throw std::domain_error("Process not supported.");
+    }
+}
+
+void Controller::apply(std::vector<Tuple> const& diffList, Applyer::Process process) const {
+    Applyer* applyer = getApplyer(process);
+
+    for (Tuple const& tuple : diffList) {
+        if (tuple.toDo == Tuple::Action::CREATE_DIR) sf::create_directories(tuple.destination);
+        else if (tuple.toDo == Tuple::Action::CREATE || tuple.toDo == Tuple::Action::UPDATE) {
+            applyer->setSource(tuple.source);
+            applyer->setDestination(tuple.destination);
+            applyer->apply(process);
+        } else if (tuple.toDo == Tuple::DELETE) sf::remove_all(tuple.destination);
+    }
+
+    delete applyer;
 }
