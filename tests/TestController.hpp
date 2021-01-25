@@ -48,4 +48,13 @@ void testApplyFunctionEncrypt() {
     delete ctrl;
 }
 
+void testApplyFunctionDecrypt() {
+    Controller* ctrl = new Controller("testTreeEncrypt", "testTreeDecrypt", "azerty");
+
+    std::vector<Tuple> diffList(ctrl->diff(true));
+    ctrl->apply(diffList, Applyer::Process::DECRYPT);
+
+    delete ctrl;
+}
+
 #endif //LYOKO_TESTCONTROLLER_HPP

@@ -91,6 +91,7 @@ Applyer* Controller::getApplyer(const Applyer::Process &process) const {
 void Controller::apply(std::vector<Tuple> const& diffList, Applyer::Process process) const {
     Applyer* applyer = getApplyer(process);
 
+    // Apply modifications.
     for (Tuple const& tuple : diffList) {
         if (tuple.toDo == Tuple::Action::CREATE_DIR) sf::create_directories(tuple.destination);
         else if (tuple.toDo == Tuple::Action::CREATE || tuple.toDo == Tuple::Action::UPDATE) {
@@ -98,6 +99,12 @@ void Controller::apply(std::vector<Tuple> const& diffList, Applyer::Process proc
             applyer->setDestination(tuple.destination);
             applyer->apply(process);
         } else if (tuple.toDo == Tuple::DELETE) sf::remove_all(tuple.destination);
+    }
+
+    // Copy last modified time.
+    for (Tuple const& tuple : diffList) {
+        if (tuple.toDo != Tuple::DELETE && tuple.source.lexically_relative(source).has_parent_path())
+            sf::last_write_time(tuple.destination.parent_path(), sf::last_write_time(tuple.source.parent_path()));
     }
 
     delete applyer;
