@@ -34,15 +34,15 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
             else if (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath)) {
                 for (sf::path const& path : sf::directory_iterator(destinationPath)) {
                     sf::path hypotheticalSourcePath(sourcePath / path.filename());
-                    if (encExtension) {
+                    if (encExtension && !sf::is_directory(path)) {
                         if (hypotheticalSourcePath.extension() == ".enc") hypotheticalSourcePath.replace_extension("");
                         else hypotheticalSourcePath += ".enc";
                     }
                     if (!exists(hypotheticalSourcePath)) diffList.push_back({
-                            "",
-                            path,
-                            Tuple::Action::DELETE
-                        });
+                        "",
+                        path,
+                        Tuple::Action::DELETE
+                    });
                 }
             }
 
