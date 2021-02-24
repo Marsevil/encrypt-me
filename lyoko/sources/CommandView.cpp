@@ -48,6 +48,9 @@ void CommandView::printDiff(const std::vector<Tuple> &tuples) {
                 case Tuple::Action::UPDATE:
                     std::cout << "UPDATE";
                     break;
+                case Tuple::Action::CREATE_DIR:
+                    std::cout << "CREATE DIRECTORY";
+                    break;
                 default:
                     std::cout << "Undifined";
             }
