@@ -41,6 +41,7 @@ class Controller {
 
 public:
     Controller(View* _view, sf::path const& _source = "", sf::path const& _destination = "", std::string const& _password = "");
+    ~Controller();
 
     inline sf::path const& getSource() const { return source; }
     inline void setSource(sf::path const& _source) { source = _source; }

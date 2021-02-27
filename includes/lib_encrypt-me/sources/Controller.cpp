@@ -9,6 +9,10 @@ Controller::Controller(View* _view, sf::path const& _source, sf::path const& _de
     // Nothing to do here.
 }
 
+Controller::~Controller() {
+    delete view;
+}
+
 std::vector<Tuple> Controller::diff(bool encExtension) const {
     std::vector<Tuple> diffList(checkConfig(encExtension));
 
