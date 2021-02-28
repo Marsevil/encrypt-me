@@ -9,8 +9,26 @@ Controller::Controller(View* _view, sf::path const& _source, sf::path const& _de
     // Nothing to do here.
 }
 
+void Controller::checkDirectoryContent(bool encExtension, sf::path sourcePath, sf::path destinationPath, std::vector<Tuple>& diffList) {
+    for (sf::path const& path : sf::directory_iterator(destinationPath)) {
+        sf::path hypotheticalSourcePath(sourcePath / path.filename());
+        if (encExtension && !sf::is_directory(path)) {
+            if (hypotheticalSourcePath.extension() == ".enc") hypotheticalSourcePath.replace_extension("");
+            else hypotheticalSourcePath += ".enc";
+        }
+        if (!exists(hypotheticalSourcePath)) diffList.push_back({
+            "",
+            path,
+            Tuple::Action::DELETE
+        });
+    }
+}
+
 std::vector<Tuple> Controller::diff(bool encExtension) const {
     std::vector<Tuple> diffList(checkConfig(encExtension));
+
+    if (sf::last_write_time(source) > sf::last_write_time(destination))
+        checkDirectoryContent(encExtension, source, destination, diffList);
 
     diff(encExtension, source, destination, diffList);
 
@@ -32,18 +50,7 @@ void Controller::diff(bool encExtension, sf::path const& sourceDirectory, sf::pa
                 Tuple::Action::CREATE_DIR
             });
             else if (sf::last_write_time(sourcePath) > sf::last_write_time(destinationPath)) {
-                for (sf::path const& path : sf::directory_iterator(destinationPath)) {
-                    sf::path hypotheticalSourcePath(sourcePath / path.filename());
-                    if (encExtension && !sf::is_directory(path)) {
-                        if (hypotheticalSourcePath.extension() == ".enc") hypotheticalSourcePath.replace_extension("");
-                        else hypotheticalSourcePath += ".enc";
-                    }
-                    if (!exists(hypotheticalSourcePath)) diffList.push_back({
-                        "",
-                        path,
-                        Tuple::Action::DELETE
-                    });
-                }
+                checkDirectoryContent(encExtension, sourcePath, destinationPath, diffList);
             }
 
             diff(encExtension, sourcePath, destinationPath, diffList);

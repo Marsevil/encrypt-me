@@ -37,17 +37,39 @@ class Controller {
      */
     static void diff(bool encExtension, sf::path const& sourceDirectory, sf::path const& destinationDirectory, std::vector<Tuple>& diffList);
 
+    static void checkDirectoryContent(bool encExtension, sf::path sourcePath, sf::path destinationPath, std::vector<Tuple>& diffList);
+
+    /**
+     * Use process to instantiate the right applyer.
+     * @param process action that the user want to be done.
+     * @return New applyer instance.
+     */
     Applyer* getApplyer(Applyer::Process const& process) const;
 
 public:
     Controller(View* _view, sf::path const& _source = "", sf::path const& _destination = "", std::string const& _password = "");
 
+    /**
+     * @return not null.
+     */
     inline sf::path const& getSource() const { return source; }
+    /**
+     * @param _source shouldn't be null.
+     */
     inline void setSource(sf::path const& _source) { source = _source; }
 
+    /**
+     * @return not null.
+     */
     inline sf::path const& getDestination() const { return destination; }
+    /**
+     * @param _destination should not be null.
+     */
     inline void setDestination(sf::path const& _destination) { destination = _destination; }
 
+    /**
+     * @param _password should not be empty.
+     */
     inline void setPassword(std::string _password) { password = _password; }
 
     /**
@@ -70,6 +92,9 @@ public:
      */
     void apply(std::vector<Tuple> const& diffList, Applyer::Process process) const;
 
+    /**
+     * Run sequence of instructions to execute chosen process.
+     */
     void run();
 };
 
