@@ -114,7 +114,8 @@ bool CommandView::confirmDiff(const std::vector<Tuple> &tuples) {
 }
 
 void CommandView::printDone() {
-    std::cout << "OK." << std::endl;
+    if (verbose)
+        std::cout << "OK." << std::endl;
 }
 
 Action CommandView::getAction() {
