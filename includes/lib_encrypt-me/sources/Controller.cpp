@@ -9,6 +9,10 @@ Controller::Controller(View* _view, sf::path const& _source, sf::path const& _de
     // Nothing to do here.
 }
 
+Controller::~Controller() {
+    delete view;
+}
+
 void Controller::checkDirectoryContent(bool encExtension, sf::path sourcePath, sf::path destinationPath, std::vector<Tuple>& diffList) {
     for (sf::path const& path : sf::directory_iterator(destinationPath)) {
         sf::path hypotheticalSourcePath(sourcePath / path.filename());

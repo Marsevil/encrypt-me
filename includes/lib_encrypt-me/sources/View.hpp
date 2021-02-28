@@ -13,6 +13,7 @@
 
 class View {
 public:
+    virtual ~View() = default;
     // Required.
     virtual sf::path getSource() = 0;
     virtual sf::path getDestination() = 0;

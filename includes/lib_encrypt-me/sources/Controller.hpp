@@ -48,6 +48,7 @@ class Controller {
 
 public:
     Controller(View* _view, sf::path const& _source = "", sf::path const& _destination = "", std::string const& _password = "");
+    ~Controller();
 
     /**
      * @return not null.
